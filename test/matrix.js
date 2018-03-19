@@ -3,19 +3,39 @@
 let expect = require("chai").expect;
 let assert = require("chai").assert;
 
+const {List} = require('immutable');
+
 describe("matrix", function () {
 	let matrix = require("../src/matrix")
 
 
 	it("create", function () {
-		assert.deepEqual(matrix.createRectangle(2, 2),
-			[[0, 0], [0, 0]]);
-		assert.deepEqual(matrix.createRectangle(3, 3),
-			[[0, 0, 0], [0, 0, 0], [0, 0, 0]]);
-		assert.deepEqual(matrix.createRectangle(3, 2),
-			[[0, 0, 0], [0, 0, 0]]);
-		assert.deepEqual(matrix.createRectangle(2, 3),
-			[[0, 0], [0, 0], [0, 0]]);
+		expect(matrix.createRectangle(2, 2).equals(
+			List([
+				List([0, 0]),
+				List([0, 0])
+			])
+		)).to.equal(true);
+		expect(matrix.createRectangle(3, 3).equals(
+			List([
+				List([0, 0, 0]),
+				List([0, 0, 0]),
+				List([0, 0, 0])
+			])
+		)).to.equal(true);
+		expect(matrix.createRectangle(3, 2).equals(
+			List([
+				List([0, 0, 0]),
+				List([0, 0, 0])
+			])
+		)).to.equal(true);
+		expect(matrix.createRectangle(2, 3).equals(
+			List([
+				List([0, 0]),
+				List([0, 0]),
+				List([0, 0])
+			])
+		)).to.equal(true);
 	});
 
 	describe("shapeFit", () => {

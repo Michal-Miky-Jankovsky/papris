@@ -1,12 +1,13 @@
 "use strict";
 
 const shapes = require("../src/shapes");
-const { List } = require('immutable');
+const {List} = require('immutable');
 
 const EMPTY = 0;
+const NONE = null;
 
 /**
- * @typedef {Array.<Array.<number>>} Matrix
+ * @typedef {List.<List.<number>>} Matrix immutable
  */
 
 /**
@@ -15,11 +16,13 @@ const EMPTY = 0;
  * @return {number}
  */
 function rightMax(matrix) {
-	let rowsLength = matrix.map((row) => row.length);
+	let rowsLength = matrix.map((row) => row.size);
 	return Math.max(...rowsLength);
 }
 
 module.exports = {
+	EMPTY: EMPTY,
+	NONE: NONE,
 	/**
 	 * Creates rectangle matrix
 	 * @param width
@@ -27,13 +30,17 @@ module.exports = {
 	 * @returns {Matrix}
 	 */
 	createRectangle: (width, height) => {
-		return Array.from(
-			Array(height),
-			() => Array.from(
-				Array(width),
-				() => EMPTY
-			)
-		);
+		let matrix = List();
+
+		for (let row = 0; row < height; row++) {
+			let rowItems = List();
+			for (let column = 0; column < width; column++) {
+				rowItems = rowItems.push(EMPTY);
+			}
+			matrix = matrix.push(rowItems);
+		}
+
+		return matrix;
 	},
 	/**
 	 *
@@ -54,20 +61,9 @@ module.exports = {
 		}
 		// vertical RAW (rectangle only) overflow
 		// todo other matrix shapes
-		if (shapes.getHeight(shape) + y > matrix.length) {
+		if (shapes.getHeight(shape) + y > matrix.size) {
 			return false;
 		}
-
-		let matrixBefore = List();
-		matrix.map((row)=>{
-			let rowList = List();
-			row.map((cell)=>{
-				rowList = rowList.push(cell);
-			});
-			matrixBefore = matrixBefore.push(rowList);
-		});
-
-
 
 		return true;
 	}
