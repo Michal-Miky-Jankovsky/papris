@@ -66,5 +66,50 @@ module.exports = {
 		}
 
 		return true;
+	},
+	/**
+	 *
+	 * @param {Matrix} matrix
+	 * @param {Shape} shape
+	 * @param {number} x
+	 * @param {number} y
+	 */
+	tryToPlaceShape: (matrix, shape, x, y) => {
+		let collision = false;
+
+		shape.map((row, rowIndex) => {
+			row.map((cellValue, columnIndex) => {
+				let y2 = rowIndex + y,
+					x2 = columnIndex + x;
+
+				if (matrix.getIn([y2, x2]) === EMPTY) {
+					matrix = matrix.setIn([y2, x2], cellValue);
+				} else {
+					collision = true;
+				}
+			})
+		});
+
+		return collision === true ? false : matrix;
+	},
+	isSolved: (matrix) => {
+		return matrix.every((row) => {
+			return row.every((cellValue) => {
+				return cellValue !== EMPTY && cellValue !== NONE;
+			})
+		})
+	},
+	countEmpty: (matrix) => {
+		let count = 0;
+
+		matrix.map((row) => {
+			row.map((cellValue) => {
+				if (cellValue === EMPTY) {
+					count++;
+				}
+			})
+		});
+
+		return count;
 	}
 };
