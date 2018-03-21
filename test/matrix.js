@@ -105,6 +105,15 @@ describe("matrix", function () {
 		});
 
 		it("collision", () => {
+			let matrixChanged1 = matrix.tryToPlaceShape(matrix3x3, shape2x2, 0, 0)
+			expect(matrix.isSolved(matrixChanged1)).to.equal(false);
+			expect(matrix.countEmpty(matrixChanged1)).to.equal(5);
+
+			let matrixChanged2 = matrix.tryToPlaceShape(matrixChanged1, shape3x1, 0, 0)
+			expect(matrixChanged2).to.equal(false);
+
+			let matrixChanged3 = matrix.tryToPlaceShape(matrixChanged1, shape1x2, 1, 1)
+			expect(matrixChanged3).to.equal(false);
 
 		});
 

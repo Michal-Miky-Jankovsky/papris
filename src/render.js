@@ -1,4 +1,5 @@
-const matrix = require("../src/matrix");
+const matrix = require("./matrix");
+const shape = require("./shapes");
 
 
 module.exports = {
@@ -18,6 +19,22 @@ module.exports = {
 						return item === matrix.NONE ? " " : item;
 					})
 					.join(" ")
+			);
+		});
+		console.log("");
+	},
+	/**
+	 *
+	 * @param {Shape} _shape
+	 */
+	shape: (_shape)=>{
+		if (!_shape) {
+			console.log("invalid shape");
+			return;
+		}
+		_shape.map((row) => {
+			console.log(
+				row.join(" ")
 			);
 		});
 		console.log("");
