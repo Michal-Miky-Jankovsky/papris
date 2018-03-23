@@ -4,142 +4,318 @@ let expect = require("chai").expect;
 let assert = require("chai").assert;
 
 describe("shapes", function () {
-	let getRawShapes = require("../src/shapes").getRawShapes;
-	let getShapes = require("../src/shapes").getShapes;
-	let getWidth = require("../src/shapes").getWidth;
-	let getHeight = require("../src/shapes").getHeight;
-	let getHandleRow = require("../src/shapes").getHandleRow;
-	let getRotatedClone180 = require("../src/shapes").getRotatedClone180;
+	let shapes = require("../src/shapes");
 
-	it("getRawShapes", function () {
-		assert.deepEqual(getRawShapes(),
-			[
+	describe("getShapes", () => {
+
+		it("getRawShapes", function () {
+			assert.deepEqual(shapes.getRawShapes(),
 				[
-					[1],
-					[1],
-					[1],
-					[1, 1],
-				],
-				[
-					[1],
-					[1, 1],
-					[1],
-				],
-				[
-					[1, 1],
-					[0, 1],
-					[0, 1],
-					[0, 1, 1],
-				],
-				[
-					[1],
-					[1],
-				],
-				[
-					[1],
-					[1, 1],
+					[
+						[1],
+						[1],
+						[1],
+						[1, 1],
+					],
+					[
+						[1],
+						[1, 1],
+						[1],
+					],
+					[
+						[1, 1],
+						[0, 1],
+						[0, 1],
+						[0, 1, 1],
+					],
+					[
+						[1],
+						[1],
+					],
+					[
+						[1],
+						[1, 1],
+					]
 				]
-			]
-		);
-	});
+			);
+		});
 
-	it("getShapes", function () {
-		assert.deepEqual(getShapes(),
-			[
+		it("getShapes", function () {
+			assert.deepEqual(shapes.getShapes(),
 				[
-					[1, 0],
-					[1, 0],
-					[1, 0],
-					[1, 1],
-				],
-				[
-					[1, 0],
-					[1, 1],
-					[1, 0],
-				],
-				[
-					[1, 1, 0],
-					[0, 1, 0],
-					[0, 1, 0],
-					[0, 1, 1],
-				],
-				[
-					[1],
-					[1],
-				],
-				[
-					[1, 0],
-					[1, 1],
+					[
+						[1, 0],
+						[1, 0],
+						[1, 0],
+						[1, 1],
+					],
+					[
+						[1, 0],
+						[1, 1],
+						[1, 0],
+					],
+					[
+						[1, 1, 0],
+						[0, 1, 0],
+						[0, 1, 0],
+						[0, 1, 1],
+					],
+					[
+						[1],
+						[1],
+					],
+					[
+						[1, 0],
+						[1, 1],
+					]
 				]
-			]
-		);
+			);
+		});
 	});
 
-	it("getRotatedClone180", function () {
-		assert.deepEqual(getRotatedClone180(
-			[
-				[1, 2]
-			]),
-			[
-				[2, 1]
-			]);
-		assert.deepEqual(getRotatedClone180(
-			[
-				[1],
-				[2]
-			]),
-			[
-				[2],
-				[1]
-			]);
-		assert.deepEqual(getRotatedClone180(
-			[
-				[1, 2],
-				[3, 4],
-			]),
-			[
-				[4, 3],
-				[2, 1],
-			]);
+	describe("get dimensions",()=>{
+		it("getWidth", function () {
+			let allRawShapes = shapes.getShapes();
+
+			expect(shapes.getNotNormalizedWidth(allRawShapes[0])).to.equal(2);
+			expect(shapes.getNotNormalizedWidth(allRawShapes[1])).to.equal(2);
+			expect(shapes.getNotNormalizedWidth(allRawShapes[2])).to.equal(3);
+			expect(shapes.getNotNormalizedWidth(allRawShapes[3])).to.equal(1);
+			expect(shapes.getNotNormalizedWidth(allRawShapes[4])).to.equal(2);
+		});
+
+		it("getWidth", function () {
+			let allShapes = shapes.getShapes();
+
+			expect(shapes.getWidth(allShapes[0])).to.equal(2);
+			expect(shapes.getWidth(allShapes[1])).to.equal(2);
+			expect(shapes.getWidth(allShapes[2])).to.equal(3);
+			expect(shapes.getWidth(allShapes[3])).to.equal(1);
+			expect(shapes.getWidth(allShapes[4])).to.equal(2);
+		});
+
+		it("getHeight", function () {
+			let allShapes = shapes.getShapes();
+
+			expect(shapes.getHeight(allShapes[0])).to.equal(4);
+			expect(shapes.getHeight(allShapes[1])).to.equal(3);
+			expect(shapes.getHeight(allShapes[2])).to.equal(4);
+			expect(shapes.getHeight(allShapes[3])).to.equal(2);
+			expect(shapes.getHeight(allShapes[4])).to.equal(2);
+		});
 	});
 
+	describe("rotation",()=>{
 
-	it("getWidth", function () {
-		let shapes = getShapes();
+		it("getRotatedClone90", function () {
+			assert.deepEqual(shapes.getRotatedClone90(
+				[
+					[1, 2]
+				]),
+				[
+					[1],
+					[2]
+				]);
+			assert.deepEqual(shapes.getRotatedClone90(
+				[
+					[1],
+					[2]
+				]),
+				[
+					[2, 1]
+				]);
+			assert.deepEqual(shapes.getRotatedClone90(
+				[
+					[1, 2],
+					[3, 4],
+				]),
+				[
+					[3, 1],
+					[4, 2],
+				]);
+		});
 
-		expect(getWidth(shapes[0])).to.equal(2);
-		expect(getWidth(shapes[1])).to.equal(2);
-		expect(getWidth(shapes[2])).to.equal(3);
-		expect(getWidth(shapes[3])).to.equal(1);
-		expect(getWidth(shapes[4])).to.equal(2);
-	});
+		it("getRotatedClone180", function () {
+			assert.deepEqual(shapes.getRotatedClone180(
+				[
+					[1, 2]
+				]),
+				[
+					[2, 1]
+				]);
+			assert.deepEqual(shapes.getRotatedClone180(
+				[
+					[1],
+					[2]
+				]),
+				[
+					[2],
+					[1]
+				]);
+			assert.deepEqual(shapes.getRotatedClone180(
+				[
+					[1, 2],
+					[3, 4],
+				]),
+				[
+					[4, 3],
+					[2, 1],
+				]);
+		});
 
-	it("getHeight", function () {
-		let shapes = getShapes();
+		it("getRotatedClone270", function () {
+			assert.deepEqual(shapes.getRotatedClone270(
+				[
+					[1, 2]
+				]),
+				[
+					[2],
+					[1]
+				]);
+			assert.deepEqual(shapes.getRotatedClone270(
+				[
+					[1],
+					[2]
+				]),
+				[
+					[1, 2]
+				]);
+			assert.deepEqual(shapes.getRotatedClone270(
+				[
+					[1, 2],
+					[3, 4],
+				]),
+				[
+					[2, 4],
+					[1, 3],
+				]);
+		});
 
-		expect(getHeight(shapes[0])).to.equal(4);
-		expect(getHeight(shapes[1])).to.equal(3);
-		expect(getHeight(shapes[2])).to.equal(4);
-		expect(getHeight(shapes[3])).to.equal(2);
-		expect(getHeight(shapes[4])).to.equal(2);
 	});
 
 
 	it("getHandleRow", function () {
-		let shapes = getShapes();
+		let allShapes = shapes.getShapes();
 
-		expect(getHandleRow(shapes[0])).to.equal(0);
-		expect(getHandleRow(shapes[1])).to.equal(0);
-		expect(getHandleRow(shapes[2])).to.equal(0);
-		expect(getHandleRow(shapes[3])).to.equal(0);
-		expect(getHandleRow(shapes[4])).to.equal(0);
+		expect(shapes.getHandleRow(allShapes[0])).to.equal(0);
+		expect(shapes.getHandleRow(allShapes[1])).to.equal(0);
+		expect(shapes.getHandleRow(allShapes[2])).to.equal(0);
+		expect(shapes.getHandleRow(allShapes[3])).to.equal(0);
+		expect(shapes.getHandleRow(allShapes[4])).to.equal(0);
 
 		let shape = [
 			[0, 1],
 			[0, 1],
 			[1, 1],
 		];
-		expect(getHandleRow(shape)).to.equal(2);
+		expect(shapes.getHandleRow(shape)).to.equal(2);
 	});
+
+
+	it("areSameShapes", function () {
+		expect(shapes.areSameShapes(
+			[
+				[1, 2],
+				[3, 4]
+			],
+			[
+				[1, 2],
+				[3, 4]
+			]
+		)).to.equal(true);
+		expect(shapes.areSameShapes(
+			[
+				[1, 2],
+				[3, 4]
+			],
+			[
+				[1, 2, 0],
+				[3, 4]
+			]
+		)).to.equal(false);
+		expect(shapes.areSameShapes(
+			[
+				[1, 2],
+				[3, 4]
+			],
+			[
+				[1, 2],
+				[3, 4],
+				[0]
+			]
+		)).to.equal(false);
+		expect(shapes.areSameShapes(
+			[
+				[1, 2],
+				[3, 4]
+			],
+			[
+				[1, 2],
+				[4, 3]
+			]
+		)).to.equal(false);
+		expect(shapes.areSameShapes(
+			[
+				[1, 0],
+				[1, 1]
+			],
+			[
+				[1, 1],
+				[1, 0]
+			]
+		)).to.equal(false);
+	});
+
+	it("getShapeVariants", function () {
+		assert.deepEqual(shapes.getShapeVariants(
+			[
+				[1, 1],
+				[1, 1]
+			]),
+			[
+				[
+					[1, 1],
+					[1, 1]
+				]
+			]);
+		assert.deepEqual(shapes.getShapeVariants(
+			[
+				[1],
+				[1]
+			]),
+			[
+				[
+					[1],
+					[1]
+				],
+				[
+					[1, 1]
+				]
+			]);
+		assert.deepEqual(shapes.getShapeVariants(
+			[
+				[1, 0],
+				[1, 1]
+			]),
+			[
+				[
+					[1, 0],
+					[1, 1],
+				],
+				[
+					[1, 1],
+					[1, 0],
+				],
+				[
+					[1, 1],
+					[0, 1],
+				],
+				[
+					[0, 1],
+					[1, 1],
+				],
+			]);
+	});
+
 
 });
