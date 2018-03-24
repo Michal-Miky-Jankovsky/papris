@@ -33,6 +33,11 @@ const raw =
 
 const EMPTY = 0;
 
+/**
+ * Fill zeros - "normalize" to rectangle
+ * @param {Shape} shape
+ * @returns {Shape}
+ */
 function fillZeros(shape) {
 	let width = getNotNormalizedWidth(shape),
 		newShape = [];
@@ -52,10 +57,18 @@ const normalized = raw.map((shape) => {
 	return fillZeros(shape);
 });
 
+/**
+ * Get (not normalized) shapes
+ * @returns {Array.<Shape>}
+ */
 function getRawShapes() {
 	return raw;
 }
 
+/**
+ * Get "normalized" shapes (all rectangle)
+ * @returns {Array.<Shape>}
+ */
 function getShapes() {
 	return normalized;
 }
@@ -109,24 +122,9 @@ function getHandleRow(shape) {
 }
 
 /**
- *
- */
-function getRotatedClone180(shape) {
-	let newShape = Array();
-
-	for (let row of shape) {
-		newShape.unshift(
-			row
-				.slice()
-				.reverse()
-		);
-	}
-
-	return newShape;
-}
-
-/**
- *
+ * Get rotated (cloned) shape 90 degrees
+ * @param {Shape} shape
+ * @return {Shape}
  */
 function getRotatedClone90(shape) {
 	let newHeight = shape[0].length,
@@ -144,7 +142,28 @@ function getRotatedClone90(shape) {
 }
 
 /**
- *
+ * Get rotated (cloned) shape 180 degrees
+ * @param {Shape} shape
+ * @return {Shape}
+ */
+function getRotatedClone180(shape) {
+	let newShape = Array();
+
+	for (let row of shape) {
+		newShape.unshift(
+			row
+				.slice()
+				.reverse()
+		);
+	}
+
+	return newShape;
+}
+
+/**
+ * Get rotated (cloned) shape 270 degrees
+ * @param {Shape} shape
+ * @return {Shape}
  */
 function getRotatedClone270(shape) {
 	let newHeight = shape[0].length,
@@ -162,8 +181,9 @@ function getRotatedClone270(shape) {
 }
 
 /**
- *
+ * Get all different shape variants (rotated variants of same shape)
  * @param {Shape} shape
+ * @return {Array.<Shape>}
  */
 function getShapeVariants(shape) {
 	let rotated90 = getRotatedClone90(shape);
@@ -184,6 +204,12 @@ function getShapeVariants(shape) {
 	return [shapeClone, rotated90, rotated180, rotated270]
 }
 
+/**
+ * Are same shapes
+ * @param {Shape} shape1
+ * @param {Shape} shape2
+ * @returns {boolean}
+ */
 function areSameShapes(shape1, shape2) {
 	if (shape1.length !== shape2.length) {
 		return false;
@@ -201,7 +227,6 @@ function areSameShapes(shape1, shape2) {
 
 module.exports = {
 	EMPTY,
-	fillZeros,
 	getShapes,
 	getRawShapes,
 	getWidth,

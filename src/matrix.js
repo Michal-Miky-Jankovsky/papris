@@ -1,5 +1,3 @@
-"use strict";
-
 const shapes = require("../src/shapes");
 const {List} = require('immutable');
 
@@ -32,18 +30,20 @@ module.exports = {
 	createRectangle: (width, height) => {
 		let matrix = List();
 
-		for (let row = 0; row < height; row++) {
-			let rowItems = List();
-			for (let column = 0; column < width; column++) {
-				rowItems = rowItems.push(EMPTY);
+		return matrix.withMutations((matrix) => {
+			for (let row = 0; row < height; row++) {
+				let rowItems = List();
+				for (let column = 0; column < width; column++) {
+					rowItems = rowItems.push(EMPTY);
+				}
+				matrix = matrix.push(rowItems);
 			}
-			matrix = matrix.push(rowItems);
-		}
-
-		return matrix;
+		});
 	},
 	/**
-	 *
+	 * Test if shape fit into matrix
+	 *  - independent on what is in matrix already
+	 *  - just if make sense to try
 	 * @param {Matrix} matrix
 	 * @param {Shape} shape
 	 * @param {number} x
@@ -68,30 +68,41 @@ module.exports = {
 		return true;
 	},
 	/**
-	 *
+	 * Try to place in matrix
+	 *  - returns new matrix if no conflict
 	 * @param {Matrix} matrix
 	 * @param {Shape} shape
 	 * @param {number} x
 	 * @param {number} y
+	 * @return {Matrix|false}
 	 */
 	tryToPlaceShape: (matrix, shape, x, y) => {
-		let collision = false;
+		let collision = false,
+			newMatrix;
 
-		shape.map((row, rowIndex) => {
-			row.map((cellValue, columnIndex) => {
-				let y2 = rowIndex + y,
-					x2 = columnIndex + x;
+		newMatrix = matrix.withMutations((matrix) => {
+			shape.map((row, rowIndex) => {
+				row.map((cellValue, columnIndex) => {
+					let y2 = rowIndex + y,
+						x2 = columnIndex + x;
 
-				if (matrix.getIn([y2, x2]) === EMPTY) {
-					matrix = matrix.setIn([y2, x2], cellValue);
-				} else {
-					collision = true;
-				}
-			})
+					if (matrix.getIn([y2, x2]) === EMPTY) {
+						matrix = matrix.setIn([y2, x2], cellValue);
+					} else {
+						collision = true;
+					}
+				})
+			});
 		});
 
-		return collision === true ? false : matrix;
+		return collision === true ? false : newMatrix;
 	},
+	/**
+	 * Finally solved
+	 *  - all matrix positions all filled
+	 * @param {Matrix} matrix
+	 * @returns {boolean}
+	 */
 	isSolved: (matrix) => {
 		return matrix.every((row) => {
 			return row.every((cellValue) => {
@@ -99,6 +110,11 @@ module.exports = {
 			})
 		})
 	},
+	/**
+	 * Count empty cells
+	 * @param {Matrix} matrix
+	 * @returns {number}
+	 */
 	countEmpty: (matrix) => {
 		let count = 0;
 

@@ -1,5 +1,3 @@
-"use strict";
-
 let expect = require("chai").expect;
 let assert = require("chai").assert;
 
@@ -316,6 +314,5 @@ describe("shapes", function () {
 				],
 			]);
 	});
-
 
 });

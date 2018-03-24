@@ -1,7 +1,4 @@
-"use strict";
-
 let expect = require("chai").expect;
-let assert = require("chai").assert;
 
 const {List} = require('immutable');
 
@@ -91,31 +88,30 @@ describe("matrix", function () {
 		});
 
 		it("happy case", function () {
-			let matrixChanged1 = matrix.tryToPlaceShape(matrix3x3, shape2x2, 1, 1)
+			let matrixChanged1 = matrix.tryToPlaceShape(matrix3x3, shape2x2, 1, 1);
 			expect(matrix.isSolved(matrixChanged1)).to.equal(false);
 			expect(matrix.countEmpty(matrixChanged1)).to.equal(5);
 
-			let matrixChanged2 = matrix.tryToPlaceShape(matrixChanged1, shape3x1, 0, 0)
+			let matrixChanged2 = matrix.tryToPlaceShape(matrixChanged1, shape3x1, 0, 0);
 			expect(matrix.isSolved(matrixChanged2)).to.equal(false);
 			expect(matrix.countEmpty(matrixChanged2)).to.equal(2);
 
-			let matrixChanged3 = matrix.tryToPlaceShape(matrixChanged2, shape1x2, 0, 1)
+			let matrixChanged3 = matrix.tryToPlaceShape(matrixChanged2, shape1x2, 0, 1);
 			expect(matrix.isSolved(matrixChanged3)).to.equal(true);
 			expect(matrix.countEmpty(matrixChanged3)).to.equal(0);
 		});
 
 		it("collision", () => {
-			let matrixChanged1 = matrix.tryToPlaceShape(matrix3x3, shape2x2, 0, 0)
+			let matrixChanged1 = matrix.tryToPlaceShape(matrix3x3, shape2x2, 0, 0);
 			expect(matrix.isSolved(matrixChanged1)).to.equal(false);
 			expect(matrix.countEmpty(matrixChanged1)).to.equal(5);
 
-			let matrixChanged2 = matrix.tryToPlaceShape(matrixChanged1, shape3x1, 0, 0)
+			let matrixChanged2 = matrix.tryToPlaceShape(matrixChanged1, shape3x1, 0, 0);
 			expect(matrixChanged2).to.equal(false);
 
-			let matrixChanged3 = matrix.tryToPlaceShape(matrixChanged1, shape1x2, 1, 1)
+			let matrixChanged3 = matrix.tryToPlaceShape(matrixChanged1, shape1x2, 1, 1);
 			expect(matrixChanged3).to.equal(false);
-
 		});
-
 	})
+
 });

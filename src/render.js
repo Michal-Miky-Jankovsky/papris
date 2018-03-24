@@ -1,6 +1,4 @@
 const matrix = require("./matrix");
-const shape = require("./shapes");
-
 
 module.exports = {
 	/**
